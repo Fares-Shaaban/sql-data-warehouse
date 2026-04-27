@@ -46,7 +46,7 @@ CREATE VIEW gold.dim_products AS
 SELECT
     ROW_NUMBER() OVER (ORDER BY pn.prd_start_dt, pn.prd_key) AS product_key, -- Surrogate key
     pn.prd_id       AS product_id,
-    pn.prd_key      AS product_number,
+    pn.sls_prd_key      AS product_number,
     pn.prd_nm       AS product_name,
     pn.cat_id       AS category_id,
     pc.cat          AS category,
@@ -61,9 +61,9 @@ LEFT JOIN silver.erp_px_cat_g1v2 pc
 WHERE pn.prd_end_dt IS NULL; -- Filter out all historical data
 GO
 
--- =============================================================================
+
 -- Create Fact Table: gold.fact_sales
--- =============================================================================
+
 IF OBJECT_ID('gold.fact_sales', 'V') IS NOT NULL
     DROP VIEW gold.fact_sales;
 GO
